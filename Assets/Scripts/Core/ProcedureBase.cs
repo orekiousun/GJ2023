@@ -35,7 +35,6 @@ namespace QxFramework.Core
             _submodules.Add(submodule);
             submodule.Init();
         }
-        
 
         public void Init()
         {

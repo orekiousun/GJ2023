@@ -173,7 +173,7 @@ namespace EventLogicSystem
 
         public override bool Run(EventContext context, List<ParamInfo> list)
         {
-            GameMgr.Get<IEventManager>().ForceEvent((int)list[0].Value);
+            // GameMgr.Get<IEventManager>().ForceEvent((int)list[0].Value);
             Debug.Log("触发事件" + list[0].Value);
             return true;
         }
@@ -235,10 +235,10 @@ namespace EventLogicSystem
         /// <returns></returns>
         public override bool Run(EventContext context, List<ParamInfo> list)
         {
-            UIManager.Instance.Open("DialogWindowUI", args: new DialogWindowUI.DialogWindowUIArg
-            ("提示", list[0].Value.ToString(), null, "确定", () =>
-            {
-            }));
+            // UIManager.Instance.Open("DialogWindowUI", args: new DialogWindowUI.DialogWindowUIArg
+            // ("提示", list[0].Value.ToString(), null, "确定", () =>
+            // {
+            // }));
             return true;
         }
 

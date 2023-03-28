@@ -4,160 +4,95 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
-
-/// <summary>
-/// 游戏管理器，用于管理之前由MonoSingleton所有逻辑
-/// </summary>
-public class GameMgr : MonoSingleton<GameMgr>
-{
-    [Header("要加载的模块")]
-    public List<ModuleEnum> modulesToLoad = new List<ModuleEnum>();
-
-    /// <summary>
-    /// 所有模块列表
-    /// </summary>
-    private readonly List<ModulePair> _modules = new List<ModulePair>();
-
-    //public static bool Enable;
-
-    /// <summary>
-    /// 初始化所有模块
-    /// </summary>
-    public void InitModules()
-    {
-        _modules.Clear();
-        HashSet<Type> modules = new HashSet<Type>();
-        foreach (var type in GetType().Assembly.GetTypes())
-        {
-            if (type.IsSubclassOf(typeof(LogicModuleBase)) && !type.IsAbstract)
-            {
-                modules.Add(type);
-            }
-        }
-        foreach (var type in modules)
-        {
-            if (modulesToLoad.Contains(item => { return item.ToString() == type.Name; }))
-            {
-                foreach (var iface in type.GetInterfaces())
-                {
-                    if (iface.Name == "I" + type.Name)
-                    {
-                        LogicModuleBase module = Activator.CreateInstance(type) as LogicModuleBase;
-                        _modules.Add(new ModulePair(iface, module));
-                        try
-                        {
-                            module.Init();
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.LogError(e);
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    public static T Get<T>()
-    {
-        var type = typeof(T);
-        var pair = Instance._modules.Find((m) => m.ModuleType == type);
-        if (pair == null)
-        {
-            Debug.Log("[GameMgr]未注册的模块" + type.Name);
-
-            return default(T);
-        }
-        if (pair.Initialized == false)
-        {
-            try
-            {
-                pair.Module.Awake();
-                pair.Initialized = true;
-            }
-            catch (Exception e)
-            {
-                Debug.LogError(e);
-            }
-        }
-        return (T)(object)pair.Module;
-    }
-
-    private void Update()
-    {
-        for (int i = 0; i < _modules.Count; i++)
-        {
-            var module = _modules[i];
-            try
-            {
-                module.Module.Update();
-            }
-            catch (Exception e)
-            {
-                Debug.LogError(e);
-            }
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        for (int i = 0; i < _modules.Count; i++)
-        {
-            var module = _modules[i];
-            try
-            {
-                module.Module.FixedUpdate();
-            }
-            catch (Exception e)
-            {
-                Debug.LogError(e);
-            }
-        }
-    }
-
-    private void OnDestroy()
-    {
-        for (int i = 0; i < _modules.Count; i++)
-        {
-            var module = _modules[i];
-            try
-            {
-                module.Module.OnDestroy();
-            }
-            catch (Exception e)
-            {
-                Debug.LogError(e);
-            }
-        }
-    }
-
-    private class ModulePair
-    {
-        public readonly Type ModuleType;
-        public readonly LogicModuleBase Module;
-
-        public bool Initialized;
-
-        public ModulePair(Type moduleType, LogicModuleBase module)
-        {
-            ModuleType = moduleType;
-            Module = module;
-        }
-    }
-}
+using QxFramework;
 
 /// <summary>
 /// 模块名要和Enum的名字完全相同才能正常加载
 /// </summary>
-public enum ModuleEnum
-{
-    Unknow = 0,
-    MainDataManager,
-    EventManager,
-    ItemManager,
-    GameTimeManager,
-    HelloQxManager,
-    HelloQxDataManager,
-    Max,
+public enum ModuleEnum {
+    GameSceneManager,
+    CharacterManager,
+}
+
+/// <summary>
+/// 游戏管理器，用于管理之前由MonoSingleton所有逻辑
+/// </summary>
+public class GameMgr : MonoSingleton<GameMgr> {
+    /// <summary>
+    /// 所有模块列表
+    /// </summary>
+    private readonly List<LogicModuleBase> _modules = new List<LogicModuleBase>();
+
+    [SerializeField] private GameSceneManager sceneManager;
+    [SerializeField] private CharacterManager characterManager;
+
+    public static IGameSceneManager SceneMgr{get; private set;}
+    public static ICharacterManager CharacterMgr {get; private set;}
+
+    /// <summary>
+    /// 初始化所有模块
+    /// </summary>
+    public void InitModules() {
+        _modules.Clear();
+        characterManager = new CharacterManager();
+        sceneManager = new GameSceneManager();
+
+        SceneMgr = Add<IGameSceneManager>(sceneManager);
+        CharacterMgr = Add<ICharacterManager>(characterManager);
+
+        foreach (var module in _modules) {
+            module.Awake();
+        }
+    }
+
+    /// <summary>
+    /// 将模块加入_modules模块列表中
+    /// </summary>
+    private T Add<T>(LogicModuleBase module) {
+        _modules.Add(module);
+        module.Init();
+        return (T)(object)module;
+    }
+
+    // public T Get<T>()
+    // {
+    //     var type = typeof(T);
+    //     int i = 0;
+    //     for(; i < _modules.Count; i++) {
+    //     }
+    // }
+
+    #region Unity Callback
+    private void Init() {
+        foreach (var module in _modules) {
+            module.Init();
+        }
+    }
+
+    private void Update() {
+        foreach (var module in _modules) {
+            module.Update();
+        }
+    }
+
+    private void FixedUpdate() {
+        foreach (var module in _modules) {
+            module.FixedUpdate();
+        }
+    }
+
+    private void OnDestroy() {
+        foreach (var module in _modules) {
+            module.OnDestroy();
+        }
+        _modules.Clear();
+
+        sceneManager = null;
+        characterManager = null;
+
+        SceneMgr = null;
+        CharacterMgr = null;
+    }
+
+    #endregion
 }

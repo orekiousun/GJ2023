@@ -31,6 +31,10 @@ namespace QxFramework.Core
         {
         }
 
+        public virtual void OnUpdate()
+        {
+        }
+
         /// <summary>
         /// 当关闭时执行。
         /// </summary>
@@ -143,7 +147,7 @@ namespace QxFramework.Core
             {
                 _childBindTool = new ChildBindTool(this, transform);
             }
-         
+            
             OnDisplay(args);
             OnRegisterHandler();
             _childBindTool.CommitValue();

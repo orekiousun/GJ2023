@@ -35,7 +35,6 @@ namespace QxFramework.Core
             {
                 _modules[i].Initialize();
             }
-                        
         }
 
         /// <summary>

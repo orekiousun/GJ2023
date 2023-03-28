@@ -12,16 +12,19 @@ EditorUserSettings:
       value: 51045650500c5a080f5b5a241275064444154d727d2a25612f714a66e6e2363c
       flags: 0
     RecentlyUsedSceneGuid-2:
-      value: 050106505250500b5c0c5e231471084442164f2e787176662b7a4b60b5e3643a
-      flags: 0
-    RecentlyUsedSceneGuid-3:
       value: 520355025c0c515f0b0a5c7046700e44474f4f28292e7660292f1e66e4b2643e
       flags: 0
-    RecentlyUsedSceneGuid-4:
+    RecentlyUsedSceneGuid-3:
       value: 06005651505108585d5d0f7046210e44474f1e737d2a75692b2a4d65e0b1613d
       flags: 0
-    RecentlyUsedSceneGuid-5:
+    RecentlyUsedSceneGuid-4:
       value: 510556505c050c58555a0d234373594417161e297a7b73657e7c4530b3b6636e
+      flags: 0
+    RecentlyUsedSceneGuid-5:
+      value: 050106505250500b5c0c5e231471084442164f2e787176662b7a4b60b5e3643a
+      flags: 0
+    RecentlyUsedSceneGuid-6:
+      value: 07040c00530d5d03090f5c23147b5c44474f1a2b7b71776928284d32e7b0363b
       flags: 0
     UnityRemoteJoystickSource:
       value: 315459091150

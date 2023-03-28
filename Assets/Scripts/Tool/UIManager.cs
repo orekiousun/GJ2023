@@ -31,11 +31,6 @@ namespace QxFramework.Core
         /// </summary>
         public readonly string FoldPath = "Prefabs/UI/";
 
-        //internal void Open(string v, object args)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         /// <summary>
         /// 子面板对象列表
         /// </summary>
@@ -237,7 +232,7 @@ namespace QxFramework.Core
             }
             return IsFind;
         }
-        
+
         public bool FindUIs(string[] UIs)
         {
             for(int i = 0; i < UIs.Length; i++)
@@ -285,5 +280,14 @@ namespace QxFramework.Core
                 }
             }
         }
+
+        private void Update()
+        {
+            for(int i = 0, cnt = _openUI.Count; i < cnt; i++)
+            {
+                if (_openUI[i].Value != null)
+                    _openUI[i].Value.OnUpdate();
+            }
+        }
     }
-} 
+}
