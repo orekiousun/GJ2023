@@ -11,7 +11,7 @@ public class CharacterManager : LogicModuleBase, ICharacterManager {
     #region Unity Callback
 
     public override void Awake() {
-        base.Awake();
+        
     }
 
     public override void Init() {
@@ -25,15 +25,15 @@ public class CharacterManager : LogicModuleBase, ICharacterManager {
     }
 
     public override void Update() {
-        base.Update();
+        
     }
 
     public override void FixedUpdate() {
-        base.FixedUpdate();
+        
     }
 
     public override void OnDestroy() {
-        base.OnDestroy();
+        
     }
 
     #endregion

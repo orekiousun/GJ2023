@@ -5,13 +5,11 @@ using QxFramework.Core;
 
 public class GameProcedure : ProcedureBase {
     protected override void OnInit() {
-        base.OnInit();
     }
 
     protected override void OnEnter(object args) {
-        base.OnEnter(args);
-        UIManager.Instance.Open(NameList.UI.TipUI.ToString(), args: "xx场景");
-        // GameMgr.SceneMgr.ChangeScene();
+        GameMgr.Instance.InitModules();
+        GameMgr.SceneMgr.ChangeScene("GamePlay");
     }
 
     protected override void OnLeave() {
