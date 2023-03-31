@@ -35,7 +35,7 @@ public class GameSceneManager : LogicModuleBase, IGameSceneManager {
     }
 
 
-    #region Unity Callback
+#region Unity Callback
 
     public override void Awake() {
 
@@ -58,5 +58,5 @@ public class GameSceneManager : LogicModuleBase, IGameSceneManager {
         
     }
 
-    #endregion
+#endregion
 }

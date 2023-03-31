@@ -10,12 +10,273 @@ using System.Net;
 using System.Runtime.InteropServices;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
+using NameList;
+using QxFramework.Core;
 
 /// <summary>
 /// 通用工具类。
 /// </summary>
 public static class Utils
 {
+    public static readonly WaitForSeconds waitHalfSecond = new WaitForSeconds(0.5f);
+    public static readonly WaitForEndOfFrame waitOneFrame = new WaitForEndOfFrame();
+
+    public enum CompareType
+    {
+        Equal = 0,
+        Less = 1,
+        Greater = 2,
+        LessOrEqual = 3,
+        GreaterOrEqual = 4,
+    }
+    public static string CompareText(CompareType type)
+    {
+        return type switch
+        {
+            CompareType.Equal => "等于",
+            CompareType.Less => "少于",
+            CompareType.Greater => "多于",
+            CompareType.LessOrEqual => "不多于",
+            CompareType.GreaterOrEqual => "不少于",
+            _ => throw new NotImplementedException(),
+        };
+    }
+    public static bool CompareCount(CompareType type, int real, int standard)
+    {
+        return type switch
+        {
+            CompareType.Equal => real == standard,
+            CompareType.Less => real < standard,
+            CompareType.Greater => real > standard,
+            CompareType.LessOrEqual => real <= standard,
+            CompareType.GreaterOrEqual => real >= standard,
+            _ => throw new NotImplementedException(),
+        };
+    }
+
+    public static bool InPeriod(float early, float late, float now)
+    {
+        //两边以在范围内为准都是闭区间
+        //以0为界，判断是否是正常情况 early < late 为正常情况，没有跨越零点
+        return early < late ? (now >= early && now <= late) : (now <= late || now >= early);
+    }
+
+    #region GameObject
+    /// <summary>
+    /// 可以选择在状态相同时是否忽略SetActive
+    /// </summary>
+    /// <param name="gameObject"></param>
+    /// <param name="active"></param>
+    /// <param name="ignoreSame">状态相同时是否忽略</param>
+    public static void SetActive(this GameObject gameObject, bool active, bool ignoreSame)
+    {
+        if (ignoreSame && (gameObject.activeSelf == active))
+            return;
+        gameObject.SetActive(active);
+    }
+    #endregion
+
+    #region 2D碰撞体的边界位置
+    public static float Left(this Collider2D col2D)
+    {
+        var bounds = col2D.bounds;
+        return bounds.center.x - bounds.extents.x;
+    }
+    public static float Right(this Collider2D col2D)
+    {
+        var bounds = col2D.bounds;
+        return bounds.center.x + bounds.extents.x;
+    }
+    public static float Up(this Collider2D col2D)
+    {
+        var bounds = col2D.bounds;
+        return bounds.center.y + bounds.extents.y;
+    }
+    public static float Down(this Collider2D col2D)
+    {
+        var bounds = col2D.bounds;
+        return bounds.center.y - bounds.extents.y;
+    }
+    public static Vector2 LeftPoint(this Collider2D col2D)
+    {
+        var bounds = col2D.bounds;
+        return new Vector2 { x = bounds.center.x - bounds.extents.x, y = bounds.center.y };
+    }
+    public static Vector2 RightPoint(this Collider2D col2D)
+    {
+        var bounds = col2D.bounds;
+        return new Vector2 { x = bounds.center.x + bounds.extents.x, y = bounds.center.y };
+    }
+    public static Vector2 UpPoint(this Collider2D col2D)
+    {
+        var bounds = col2D.bounds;
+        return new Vector2 { x = bounds.center.x, y = bounds.center.y + bounds.extents.y };
+    }
+    public static Vector2 DownPoint(this Collider2D col2D)
+    {
+        var bounds = col2D.bounds;
+        return new Vector2 { x = bounds.center.x, y = bounds.center.y - bounds.extents.y };
+    }
+    public static Vector2 LeftUpPoint(this Collider2D col2D)
+    {
+        var bounds = col2D.bounds;
+        return new Vector2 { x = bounds.center.x - bounds.extents.x, y = bounds.center.y + bounds.extents.y };
+    }
+    public static Vector2 RightDownPoint(this Collider2D col2D)
+    {
+        var bounds = col2D.bounds;
+        return new Vector2 { x = bounds.center.x + bounds.extents.x, y = bounds.center.y - bounds.extents.y };
+    }
+    public static Vector2 LeftDownPoint(this Collider2D col2D)
+    {//避免强制转换产生的Vector2的自定义构造函数的调用
+        Vector3 tmp = col2D.bounds.min;
+        return new Vector2 { x = tmp.x, y = tmp.y };
+    }
+    public static Vector2 RightUpPoint(this Collider2D col2D)
+    {
+        Vector3 tmp = col2D.bounds.max;
+        return new Vector2 { x = tmp.x, y = tmp.y };
+    }
+    #endregion
+
+    #region 一些需要字符串参数的函数扩展
+    public static int NameToLayer(Layer layer)
+    {
+        return (int)layer;
+    }
+    public static LayerMask GetMask(Layer layer)
+    {
+        return 1 << ((int)layer);
+    }
+    public static LayerMask GetMask(Layer layer1, Layer layer2)
+    {
+        return 1 << ((int)layer1) | 1 << ((int)layer2);
+    }
+    public static LayerMask GetMask(Layer layer1, Layer layer2,Layer layer3)
+    {
+        return 1 << ((int)layer1) | 1 << ((int)layer2) | 1 << ((int)layer3);
+    }
+    public static LayerMask GetMask(params Layer[] layers)
+    {
+        int tmp = 0;
+        foreach(var layer in layers)
+        {
+            tmp |= 1 << ((int)layer);
+        }
+        return tmp;//LayerMask.GetMask(layers.ToString());
+    }
+    public static UIBase Open(this UIManager uiManager, UI uiName, string name = "", object args = null,bool onlyOne = true)
+    {
+        return uiManager.Open(uiName.ToString(), name, args, onlyOne);
+    }
+    public static void Close(this UIManager uiManager, UI uiName, string objName = "")
+    {
+        uiManager.Close(uiName.ToString(), objName);
+    }
+    #endregion
+
+    #region 读表工具扩展
+    public static Vector2 GetVector2(this TableAgent tableAgent, string name, string key1, string key2)
+    {
+        string[] temp = tableAgent.GetStrings(name, key1, key2);
+
+        if (temp.Length != 2)
+        {
+            if (temp[0] != "")
+                Debug.LogWarning("Table[" + name + "] Parse Vector2 Strange Key->[" + key1 + "," + key2 + "]");
+            return Vector2.zero;
+        }
+        else
+        {
+            try
+            {
+                return new Vector2(float.Parse(temp[0]), float.Parse(temp[1]));
+            }
+            catch
+            {
+                Debug.LogError("Table[" + name + "] Parse Vector2 Error Key->[" + key1 + "," + key2 + "]");
+                throw;
+            }
+        }
+    }
+    public static int[] GetInts(this TableAgent tableAgent, string name, string key1, string key2)
+    {
+        string[] temp = tableAgent.GetStrings(name, key1, key2);
+        if (temp[0] == "")
+            return null;
+        int[] output = new int[temp.Length];
+        try
+        {
+            for (int i = 0; i < temp.Length; i++)
+                output[i] = int.Parse(temp[i]);
+            return output;
+        }
+        catch 
+        {
+            Debug.LogError("Table[" + name + "] Parse Ints Error Key->[" + key1 + "," + key2 + "]");
+            throw;
+        }
+    }
+    public static int GetIntByByte(this TableAgent tableAgent, string name, string key1, string key2)
+    {
+        string str = tableAgent.GetString(name, key1, key2);
+        if (str == "") return 0;
+        int result = 0;
+        int temp;
+        for (int i = 0; i < str.Length; i++)
+        {
+            temp = str[i] - 48;
+            if (!(temp == 0 || temp == 1))
+            {
+                Debug.LogError("Table[" + name + "] Parse Int By Byte Error Key->[" + key1 + "," + key2 + "]");
+                return 0;
+            }
+            else
+            {
+                result += temp * (int)Math.Pow(2, str.Length - i - 1);
+            }
+        }
+        return result;
+    }
+    #endregion
+
+    #region 附带画线功能的射线检测
+    public static RaycastHit2D Raycast(Vector2 origin, Vector2 direction, float distance, int layerMask, Color? rayColor = null)
+    {
+        var hit = Physics2D.Raycast(origin, direction, distance, layerMask);
+#if UNITY_EDITOR
+        direction.Normalize();
+        if (hit)
+        {
+            distance = hit.distance;
+            var tmp = new Vector2() { x = direction.y * 0.1f, y = -direction.x * 0.1f };
+            Debug.DrawLine(hit.point - tmp, hit.point + tmp, Color.white);
+        }
+        if (rayColor == null)
+            rayColor = Color.red;
+        Debug.DrawRay(origin, direction * distance, rayColor.Value);
+#endif
+        return hit;
+    }
+    public static int RaycastNonAlloc(Vector2 origin, Vector2 direction,RaycastHit2D[] results, float distance, int layerMask, Color? rayColor = null)
+    {
+        int count = Physics2D.RaycastNonAlloc(origin, direction, results, distance, layerMask);
+#if UNITY_EDITOR
+        direction.Normalize();
+        Vector2 tmp = new Vector2 { x = direction.y * 0.1f, y = -direction.x * 0.1f };
+        for (int i = 0; i < count; ++i)
+        {
+            distance = results[i].distance;
+            Debug.DrawLine(results[i].point - tmp, results[i].point + tmp, Color.white);
+        }
+        if (rayColor == null)
+            rayColor = Color.red;
+        Debug.DrawRay(origin, direction.normalized * distance, rayColor.Value);
+#endif
+        return count;
+    }
+    #endregion
+
     #region 常量
 
     /// <summary>
@@ -666,9 +927,9 @@ public static class Utils
 
     public static ulong BitSet(ulong data, int nBit)
     {
-        if (nBit >= 0 && nBit < sizeof(ulong) * 8)
+        if (nBit >= 0 && nBit < (int)sizeof(ulong) * 8)
         {
-            data = (uint)data | (uint)(1 << nBit);
+            data |= (ulong)(1 << nBit);
         }
 
         return data;
@@ -833,16 +1094,31 @@ public static class Utils
         }
         return item;
     }
+    /// <summary>
+    /// 比普通的Remove快了一点点，但是是无序的
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="list"></param>
+    /// <param name="match"></param>
+    /// <returns></returns>
+    public static bool RemoveWithoutOrder<T>(this List<T> list, Predicate<T> match)
+    {
+        int i = list.FindIndex(match);
+        if (-1 == i)
+            return false;
 
-    public static int FindCount<T>(this List<T> list, Func<T, bool> func)
+        int cnt = list.Count - 1;
+        list[i] = list[cnt];
+        list.RemoveAt(cnt);
+        return true;
+    }
+    public static int FindCount<T>(this List<T> list, Predicate<T> match)
     {
         int count = 0;
-        foreach (var item in list)
+        for (int i = 0, cnt = list.Count; i < cnt; ++i)
         {
-            if (func(item))
-            {
-                count++;
-            }
+            if (match(list[i]))
+                ++count;
         }
         return count;
     }

@@ -7,14 +7,6 @@ using UnityEngine;
 using QxFramework;
 
 /// <summary>
-/// 模块名要和Enum的名字完全相同才能正常加载
-/// </summary>
-public enum ModuleEnum {
-    GameSceneManager,
-    CharacterManager,
-}
-
-/// <summary>
 /// 游戏管理器，用于管理之前由MonoSingleton所有逻辑
 /// </summary>
 public class GameMgr : MonoSingleton<GameMgr> {
@@ -25,9 +17,11 @@ public class GameMgr : MonoSingleton<GameMgr> {
 
     [SerializeField] private GameSceneManager sceneManager;
     [SerializeField] private CharacterManager characterManager;
+    [SerializeField] private EventManager eventManager;
 
     public static IGameSceneManager SceneMgr{get; private set;}
     public static ICharacterManager CharacterMgr {get; private set;}
+    public static IEventManager EventMgr {get; private set;}
 
     /// <summary>
     /// 初始化所有模块
@@ -36,9 +30,11 @@ public class GameMgr : MonoSingleton<GameMgr> {
         _modules.Clear();
         characterManager = new CharacterManager();
         sceneManager = new GameSceneManager();
+        eventManager = new EventManager();
 
         SceneMgr = Add<IGameSceneManager>(sceneManager);
         CharacterMgr = Add<ICharacterManager>(characterManager);
+        EventMgr = Add<IEventManager>(eventManager);
 
         foreach (var module in _modules) {
             module.Awake();
@@ -54,15 +50,7 @@ public class GameMgr : MonoSingleton<GameMgr> {
         return (T)(object)module;
     }
 
-    // public T Get<T>()
-    // {
-    //     var type = typeof(T);
-    //     int i = 0;
-    //     for(; i < _modules.Count; i++) {
-    //     }
-    // }
-
-    #region Unity Callback
+#region Unity Callback
     private void Init() {
         foreach (var module in _modules) {
             module.Init();
@@ -94,5 +82,5 @@ public class GameMgr : MonoSingleton<GameMgr> {
         CharacterMgr = null;
     }
 
-    #endregion
+#endregion
 }

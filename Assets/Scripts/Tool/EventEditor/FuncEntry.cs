@@ -173,7 +173,7 @@ namespace EventLogicSystem
 
         public override bool Run(EventContext context, List<ParamInfo> list)
         {
-            // GameMgr.Get<IEventManager>().ForceEvent((int)list[0].Value);
+            GameMgr.EventMgr.ForceEvent((int)list[0].Value);
             Debug.Log("触发事件" + list[0].Value);
             return true;
         }
