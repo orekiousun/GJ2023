@@ -6,15 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/QxExamples/SaveFrameExample/SaveFrameExample.unity
-    guid: 127d110c47039b94c8073ab7e6eec0b8
-  - enabled: 1
-    path: Assets/QxExamples/MyTestExample/MyTestExample.unity
-    guid: 24b690ec84aa30f4aafc6355358c1676
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/QxExamples/MyTestExample/QxLevel_2.unity
-    guid: e1b75dac03c26b1418f91b39fc06b15e
+    path: Assets/Scene/Main.unity
+    guid: d58f6848da0ad8c418ba7919ea0ae0bc
+  - enabled: 1
+    path: Assets/Scene/GamePlay.unity
+    guid: b5848b031b9946c409ec8a8b2dde2f54
   m_configObjects: {}

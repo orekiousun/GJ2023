@@ -15,7 +15,7 @@ public class ExitUI : UIBase {
     public override void OnDisplay(object args) {
         OnExitButton = Exit;
         OnCancelButton = Cancel;
-        CommitValue();
+        // CommitValue();
     }
 
     public void Exit() {

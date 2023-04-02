@@ -276,8 +276,8 @@ public class GameEventEditor : OdinMenuEditorWindow
             {
                 if (Application.isPlaying)
                 {
-                    // GameMgr.Get<IEventManager>().OverwriteTemplate(cond);
-                    // GameMgr.Get<IEventManager>().ForceEvent(cond.TemplateId);
+                    GameMgr.EventMgr.OverwriteTemplate(cond);
+                    GameMgr.EventMgr.ForceEvent(cond.TemplateId);
                 }
                 else
                 {
