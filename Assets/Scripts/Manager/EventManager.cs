@@ -323,7 +323,6 @@ public class EventManager : LogicModuleBase, IEventManager
 
     public override void Update()
     {
-        base.Update();
         //每隔60帧主动GC
         if (Time.frameCount %60 == 0)
         {

@@ -5,7 +5,7 @@ using QxFramework.Core;
 using TarodevController;
 
 public class CharacterManager : LogicModuleBase, ICharacterManager {
-    private List<EnemyBase> enemies;
+    private List<EnemyBase> enemies = new List<EnemyBase>();
     // 用于存储当前场景中的所有敌人对象
     private PlayerController player;
     public PlayerController Player => player;
@@ -32,6 +32,7 @@ public class CharacterManager : LogicModuleBase, ICharacterManager {
         foreach (var item in enemies) {
             item.OnUpdate();
         }
+
     }
 
     public override void FixedUpdate() {

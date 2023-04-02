@@ -133,5 +133,13 @@ public class EnemyBase : MonoBehaviour {
         CheckTarget();
     }
 
+    private void Awake() {
+        InitEnemy();
+    }
+
+    private void Update() {
+        OnUpdate();
+    }
+
 #endregion
 }

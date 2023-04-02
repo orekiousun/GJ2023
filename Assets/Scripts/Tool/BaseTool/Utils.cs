@@ -165,10 +165,10 @@ public static class Utils
         }
         return tmp;//LayerMask.GetMask(layers.ToString());
     }
-    public static UIBase Open(this UIManager uiManager, UI uiName, string name = "", object args = null,bool onlyOne = true)
-    {
-        return uiManager.Open(uiName.ToString(), name, args, onlyOne);
-    }
+    // public static UIBase Open(this UIManager uiManager, UI uiName, string name = "", object args = null,bool onlyOne = true)
+    // {
+    //     return uiManager.Open(uiName.ToString(), name, args, onlyOne);
+    // }
     public static void Close(this UIManager uiManager, UI uiName, string objName = "")
     {
         uiManager.Close(uiName.ToString(), objName);
@@ -925,15 +925,15 @@ public static class Utils
 
     #region state
 
-    public static ulong BitSet(ulong data, int nBit)
-    {
-        if (nBit >= 0 && nBit < (int)sizeof(ulong) * 8)
-        {
-            data |= (ulong)(1 << nBit);
-        }
+    // public static ulong BitSet(ulong data, int nBit)
+    // {
+    //     if (nBit >= 0 && nBit < (int)sizeof(ulong) * 8)
+    //     {
+    //         data |= (ulong)(1 << nBit);
+    //     }
 
-        return data;
-    }
+    //     return data;
+    // }
 
     public static ulong BitReset(ulong data, int nBit)
     {
