@@ -9,7 +9,7 @@ public class GameProcedure : ProcedureBase {
 
     protected override void OnEnter(object args) {
         GameMgr.Instance.InitModules();
-        GameMgr.SceneMgr.ChangeScene("GamePlay");
+        GameMgr.SceneMgr.ChangeScene("GameScene1");
     }
 
     protected override void OnLeave() {
