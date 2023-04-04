@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Resources/Prefabs/UI/StatusUI.prefab.meta
+guid: 3fe3775afc6385d499b4f2c211efd73c
+=======
 guid: 61a6458db132b18469d76fa874baf504
+>>>>>>> 7676f637a2fef1158ae4912360cf92b7e4b2e5c4:Assets/Resources/Prefabs/Bullet.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

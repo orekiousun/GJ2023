@@ -1,6 +1,16 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 098316f7aeb9ead41aa4e7e6fa9001d5
 PrefabImporter:
+=======
+<<<<<<< HEAD:Assets/Resources/Scene/GameScene2.unity.meta
+guid: cb9223f935145dc4186e877ff93d158f
+DefaultImporter:
+=======
+guid: 098316f7aeb9ead41aa4e7e6fa9001d5
+PrefabImporter:
+>>>>>>> 7676f637a2fef1158ae4912360cf92b7e4b2e5c4:Assets/Resources/Prefabs/UI/StatusUI.prefab.meta
+>>>>>>> 7676f637a2fef1158ae4912360cf92b7e4b2e5c4
   externalObjects: {}
   userData: 
   assetBundleName: 

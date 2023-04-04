@@ -42,6 +42,7 @@ namespace TarodevController {
             CalculateJump(); // Possibly overrides vertical
 
             MoveCharacter(); // Actually perform the axis movement
+           
         }
 
 
@@ -140,6 +141,7 @@ namespace TarodevController {
             var move = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed) * Time.deltaTime;
             Gizmos.DrawWireCube(transform.position + move, _characterBounds.size);
         }
+      
 
         #endregion
 

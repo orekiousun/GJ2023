@@ -1,5 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 9171a5bedc2e77d42857fec6b37a766a
+=======
+<<<<<<< HEAD:Assets/Resources/Materials.meta
+guid: 933df1a5e5d31a4409b474bb920226ac
+=======
+guid: 9171a5bedc2e77d42857fec6b37a766a
+>>>>>>> 7676f637a2fef1158ae4912360cf92b7e4b2e5c4:Assets/Resources/Models.meta
+>>>>>>> 7676f637a2fef1158ae4912360cf92b7e4b2e5c4
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

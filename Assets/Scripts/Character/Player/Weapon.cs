@@ -1,23 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using QxFramework.Core;
 
 public class Weapon : MonoBehaviour
 {
-    public Transform firePoint;//»ñÈ¡Éä»÷ÆðÊ¼µãÎ»ÖÃ
-    public GameObject bulletPrefab;
+    public Transform firePoint;//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Î»ï¿½ï¿½
 
-
-    void Update()
-    {
-        if (Input.GetButtonDown("Fire1"))
-        {
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.J)) {
             Shoot();
         }
     }
-    void Shoot()
-    {
-        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+    void Shoot() {
+        ResourceManager.Instance.Instantiate("Prefabs/Bullet", firePoint);
     }
 }
 
