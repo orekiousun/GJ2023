@@ -16,6 +16,8 @@ public class GameSceneManager : LogicModuleBase, IGameSceneManager {
     private string currentScene;
     public string CurrentScene => currentScene;
 
+    public GameObject CurrentSceneAnchorPoint {get; private set;}
+
     public void ChangeScene(string newScene) {
         SceneUnload();
         lastScene = currentScene;
@@ -26,6 +28,7 @@ public class GameSceneManager : LogicModuleBase, IGameSceneManager {
     }
 
     private void SceneUnload() {
+        CurrentSceneAnchorPoint = GameObject.FindGameObjectWithTag("SceneAnchorPoint");
         MessageManager.Instance.Get<SceneMessage>().DispatchMessage(SceneMessage.WillUnload, this);
     }
 

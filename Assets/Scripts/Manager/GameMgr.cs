@@ -1,4 +1,4 @@
-﻿using QxFramework.Utilities;
+using QxFramework.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
